@@ -600,12 +600,12 @@ async def create_claim(request: ClaimCreate):
         task_identifier = _task_id("process_claim")
         logger.info(f"[WORKFLOW] Triggering {task_identifier}")
 
-        task_run = await render.workflows.run_task(
+        task_run = await render.workflows.start_task(
             task_identifier,
             [claim_id, request.claim_data.model_dump()],
         )
         claim["task_run_id"] = task_run.id
-        logger.info(f"[WORKFLOW] process_claim completed  run_id={task_run.id}")
+        logger.info(f"[WORKFLOW] process_claim started  run_id={task_run.id}")
 
     except Exception as e:
         logger.error(f"[WORKFLOW] process_claim failed: {type(e).__name__}: {e}")
